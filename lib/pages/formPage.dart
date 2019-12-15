@@ -107,15 +107,9 @@ class _formPageState extends State<formPage> {
                         fontFamily: "Ubuntu-Medium",
                         fontSize: 20,
                       )),
-                  TextFormField(
+                  TextField(
                     controller: GPAValue,
-                    keyboardType: TextInputType.numberWithOptions(
-                        signed: false, decimal: true),
-                    validator: (String value) {
-                      return value.length > 6
-                          ? null
-                          : 'Password should be more than 6 character';
-                    },
+                    keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       hintText: "Enter GPA ",
                     ),
@@ -131,8 +125,7 @@ class _formPageState extends State<formPage> {
                       )),
                   TextFormField(
                     controller: SATValue,
-                    keyboardType: TextInputType.numberWithOptions(
-                        signed: false, decimal: true),
+                    keyboardType: TextInputType.text,
                     validator: (String value) {
                       return value.length > 6
                           ? null
@@ -153,8 +146,7 @@ class _formPageState extends State<formPage> {
                       )),
                   TextFormField(
                     controller: ACTValue,
-                    keyboardType: TextInputType.numberWithOptions(
-                        signed: false, decimal: true),
+                    keyboardType: TextInputType.text,
                     validator: (String value) {
                       return value.length > 6
                           ? null
@@ -626,18 +618,6 @@ class _formPageState extends State<formPage> {
                         fontFamily: "Ubuntu-Medium",
                         fontSize: 20,
                       )),
-//                  TextFormField(
-//                    keyboardType: TextInputType.numberWithOptions(
-//                        signed: false, decimal: true),
-//                    validator: (String value) {
-//                      return value.length > 6
-//                          ? null
-//                          : 'Password should be more than 6 character';
-//                    },
-//                    decoration: InputDecoration(
-//                      hintText: "Please enter your MBTI Type ",
-//                    ),
-//                  ),
                   DropdownButton<String>(
                     value: MBTIChosen,
                     icon: Icon(Icons.unfold_more),
@@ -662,7 +642,6 @@ class _formPageState extends State<formPage> {
                       );
                     }).toList(),
                   ),
-
                   SizedBox(
                     height: 20,
                   ),
@@ -1034,11 +1013,9 @@ class _formPageState extends State<formPage> {
                       );
                     }).toList(),
                   ),
-
                   SizedBox(
                     height: 20,
                   ),
-
                   Text(
                     "Payment Plan",
                     textAlign: TextAlign.center,
@@ -1071,8 +1048,7 @@ class _formPageState extends State<formPage> {
                       )),
                   TextFormField(
                     controller: WIPValue,
-                    keyboardType: TextInputType.numberWithOptions(
-                        signed: false, decimal: true),
+                    keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       hintText: "Planned Loan ",
                     ),
