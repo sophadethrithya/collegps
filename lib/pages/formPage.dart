@@ -1,5 +1,9 @@
+import 'package:collegps/pages/getResult.dart';
+import 'package:collegps/pages/ratingDecision.dart';
 import 'package:flutter/material.dart';
 import 'package:collegps/pages/usState.dart';
+import 'package:share/share.dart';
+
 enum SingingCharacter { lafayette, jefferson }
 enum rating { stronglyDisagree, disagree, neutral, agree, stronglyAgree }
 
@@ -10,9 +14,56 @@ class formPage extends StatefulWidget {
 
 class _formPageState extends State<formPage> {
   int _value = 1;
+  final WIPValue = TextEditingController();
+  final GPAValue = TextEditingController();
+  final SATValue = TextEditingController();
+  final ACTValue = TextEditingController();
+  String stateChosen = "AK - Alaska";
+  String dropdownValue2 = "Null";
+  var formRating = Map();
+  var MBTIChosen = "INTJ";
+  var MBTI = [
+    "INTJ",
+    "INTP",
+    "ENTJ",
+    "ENTP",
+    "INFJ",
+    "INFP",
+    "ENFJ",
+    "ENFP",
+    "ISTJ",
+    "ISTP",
+    "ESFJ",
+    "ESTP",
+    "ISFJ",
+    "ISFP",
+    "ESTJ",
+    "ESFP"
+  ];
+  var APScores = {
+    'US History': "Null",
+    'Biology': "Null",
+    'Calculus AB': "Null",
+    'Calculus BC': "Null",
+    'Chemistry': "Null",
+    'Chinese Language and Culture': "Null",
+    'Computer Science A': "Null",
+    'English Language and Composition': "Null",
+    'Environmental Science': "Null",
+    'European History': "Null",
+    'Physics 1': "Null",
+    'Physics 2': "Null",
+    'Physics C': "Null",
+  };
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    for (int i = 1; i <= 5; i++) {
+      formRating[i] = new ratingDecision(i);
+    }
+  }
 
-  rating ratingChoosen = rating.stronglyDisagree;
-  String dropdownValue = "AK - Alaska";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,6 +108,7 @@ class _formPageState extends State<formPage> {
                         fontSize: 20,
                       )),
                   TextFormField(
+                    controller: GPAValue,
                     keyboardType: TextInputType.numberWithOptions(
                         signed: false, decimal: true),
                     validator: (String value) {
@@ -78,6 +130,7 @@ class _formPageState extends State<formPage> {
                         fontSize: 20,
                       )),
                   TextFormField(
+                    controller: SATValue,
                     keyboardType: TextInputType.numberWithOptions(
                         signed: false, decimal: true),
                     validator: (String value) {
@@ -99,6 +152,7 @@ class _formPageState extends State<formPage> {
                         fontSize: 20,
                       )),
                   TextFormField(
+                    controller: ACTValue,
                     keyboardType: TextInputType.numberWithOptions(
                         signed: false, decimal: true),
                     validator: (String value) {
@@ -132,106 +186,410 @@ class _formPageState extends State<formPage> {
                       fontSize: 15,
                     ),
                   ),
-                  Wrap(
-                    spacing: 5,
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      ChoiceChip(
-                        label: Text("US History"),
-                        selected: false,
-                        onSelected: (bool selected) {
-                          print('$selected');
+                      Text("US History"),
+                      DropdownButton<String>(
+                        value: APScores["US History"],
+                        icon: Icon(Icons.unfold_more),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            APScores["US History"] = newValue;
+                          });
                         },
+                        items: ["Null", "1", "2", "3", "4", "5"]
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       ),
-                      ChoiceChip(
-                        label: Text("Biology"),
-                        selected: false,
-                        onSelected: (bool selected) {
-                          print('$selected');
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Biology"),
+                      DropdownButton<String>(
+                        value: APScores["Biology"],
+                        icon: Icon(Icons.unfold_more),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            APScores["Biology"] = newValue;
+                          });
                         },
+                        items: ["Null", "1", "2", "3", "4", "5"]
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       ),
-                      ChoiceChip(
-                        label: Text("Calculus AB"),
-                        selected: false,
-                        onSelected: (bool selected) {
-                          print('$selected');
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Calculus AB"),
+                      DropdownButton<String>(
+                        value: APScores["Calculus AB"],
+                        icon: Icon(Icons.unfold_more),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            APScores["Calculus AB"] = newValue;
+                          });
                         },
+                        items: ["Null", "1", "2", "3", "4", "5"]
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       ),
-                      ChoiceChip(
-                        label: Text("Calculus BC"),
-                        selected: false,
-                        onSelected: (bool selected) {
-                          print('$selected');
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Calculus BC"),
+                      DropdownButton<String>(
+                        value: APScores["Calculus BC"],
+                        icon: Icon(Icons.unfold_more),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            APScores["Calculus BC"] = newValue;
+                          });
                         },
+                        items: ["Null", "1", "2", "3", "4", "5"]
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       ),
-                      ChoiceChip(
-                        label: Text("Chemistry"),
-                        selected: false,
-                        onSelected: (bool selected) {
-                          print('$selected');
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Chemistry"),
+                      DropdownButton<String>(
+                        value: APScores["Chemistry"],
+                        icon: Icon(Icons.unfold_more),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            APScores["Chemistry"] = newValue;
+                          });
                         },
+                        items: ["Null", "1", "2", "3", "4", "5"]
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       ),
-                      ChoiceChip(
-                        label: Text("Chinese Language and Culture"),
-                        selected: true,
-                        onSelected: (bool selected) {
-                          print('$selected');
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Chinese Language and Culture"),
+                      DropdownButton<String>(
+                        value: APScores["Chinese Language and Culture"],
+                        icon: Icon(Icons.unfold_more),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            APScores["Chinese Language and Culture"] = newValue;
+                          });
                         },
+                        items: ["Null", "1", "2", "3", "4", "5"]
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       ),
-                      ChoiceChip(
-                        label: Text("Computer Science A"),
-                        selected: false,
-                        onSelected: (bool selected) {
-                          print('$selected');
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Computer Science A"),
+                      DropdownButton<String>(
+                        value: APScores["Computer Science A"],
+                        icon: Icon(Icons.unfold_more),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            APScores["Computer Science A"] = newValue;
+                          });
                         },
+                        items: ["Null", "1", "2", "3", "4", "5"]
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       ),
-                      ChoiceChip(
-                        label: Text("English Language and Composition"),
-                        selected: false,
-                        onSelected: (bool selected) {
-                          print('$selected');
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("English Language and Composition"),
+                      DropdownButton<String>(
+                        value: APScores["English Language and Composition"],
+                        icon: Icon(Icons.unfold_more),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            APScores["English Language and Composition"] =
+                                newValue;
+                          });
                         },
+                        items: ["Null", "1", "2", "3", "4", "5"]
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       ),
-                      ChoiceChip(
-                        label: Text("English Literature and Composition"),
-                        selected: false,
-                        onSelected: (bool selected) {
-                          print('$selected');
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Environmental Science"),
+                      DropdownButton<String>(
+                        value: APScores["Environmental Science"],
+                        icon: Icon(Icons.unfold_more),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            APScores["Environmental Science"] = newValue;
+                          });
                         },
+                        items: ["Null", "1", "2", "3", "4", "5"]
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       ),
-                      ChoiceChip(
-                        label: Text("Environmental Science"),
-                        selected: false,
-                        onSelected: (bool selected) {
-                          print('$selected');
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("European History"),
+                      DropdownButton<String>(
+                        value: APScores["European History"],
+                        icon: Icon(Icons.unfold_more),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            APScores["European History"] = newValue;
+                          });
                         },
+                        items: ["Null", "1", "2", "3", "4", "5"]
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       ),
-                      ChoiceChip(
-                        label: Text("European History"),
-                        selected: false,
-                        onSelected: (bool selected) {
-                          print('$selected');
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Physics 1"),
+                      DropdownButton<String>(
+                        value: APScores["Physics 1"],
+                        icon: Icon(Icons.unfold_more),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            APScores["Physics 1"] = newValue;
+                          });
                         },
+                        items: ["Null", "1", "2", "3", "4", "5"]
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       ),
-                      ChoiceChip(
-                        label: Text("Physics 1"),
-                        selected: false,
-                        onSelected: (bool selected) {
-                          print('$selected');
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Physics 2"),
+                      DropdownButton<String>(
+                        value: APScores["Physics 2"],
+                        icon: Icon(Icons.unfold_more),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            APScores["Physics 2"] = newValue;
+                          });
                         },
+                        items: ["Null", "1", "2", "3", "4", "5"]
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       ),
-                      ChoiceChip(
-                        label: Text("Physics 2"),
-                        selected: false,
-                        onSelected: (bool selected) {
-                          print('$selected');
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Physics C"),
+                      DropdownButton<String>(
+                        value: APScores["Physics C"],
+                        icon: Icon(Icons.unfold_more),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            APScores["Physics C"] = newValue;
+                          });
                         },
-                      ),
-                      ChoiceChip(
-                        label: Text("Physics C"),
-                        selected: false,
-                        onSelected: (bool selected) {
-                          print('$selected');
-                        },
+                        items: ["Null", "1", "2", "3", "4", "5"]
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       ),
                     ],
                   ),
@@ -252,7 +610,7 @@ class _formPageState extends State<formPage> {
                     height: 30,
                   ),
                   Text(
-                    "Please enter your MBTI type or take the small questionnaire.",
+                    "Please select your MBTI type or take the small questionnaire.",
                     style: TextStyle(
                       fontFamily: "Roboto-Medium",
                       fontSize: 20,
@@ -268,18 +626,43 @@ class _formPageState extends State<formPage> {
                         fontFamily: "Ubuntu-Medium",
                         fontSize: 20,
                       )),
-                  TextFormField(
-                    keyboardType: TextInputType.numberWithOptions(
-                        signed: false, decimal: true),
-                    validator: (String value) {
-                      return value.length > 6
-                          ? null
-                          : 'Password should be more than 6 character';
-                    },
-                    decoration: InputDecoration(
-                      hintText: "Please enter your MBTI Type ",
+//                  TextFormField(
+//                    keyboardType: TextInputType.numberWithOptions(
+//                        signed: false, decimal: true),
+//                    validator: (String value) {
+//                      return value.length > 6
+//                          ? null
+//                          : 'Password should be more than 6 character';
+//                    },
+//                    decoration: InputDecoration(
+//                      hintText: "Please enter your MBTI Type ",
+//                    ),
+//                  ),
+                  DropdownButton<String>(
+                    value: MBTIChosen,
+                    icon: Icon(Icons.unfold_more),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: TextStyle(
+                      color: Colors.black,
                     ),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.deepPurpleAccent,
+                    ),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        MBTIChosen = newValue;
+                      });
+                    },
+                    items: MBTI.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
                   ),
+
                   SizedBox(
                     height: 20,
                   ),
@@ -301,50 +684,50 @@ class _formPageState extends State<formPage> {
                       RadioListTile<rating>(
                         title: const Text('Strongly Disagree'),
                         value: rating.stronglyDisagree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[1].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[1].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
                         title: const Text('Disagree'),
                         value: rating.disagree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[1].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[1].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
                         title: const Text('Neutral'),
                         value: rating.neutral,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[1].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[1].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
                         title: const Text('Agree'),
                         value: rating.agree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[1].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[1].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
-                        title: const Text('Strongly Aagree'),
+                        title: const Text('Strongly Agree'),
                         value: rating.stronglyAgree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[1].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[1].ratingChoosen = value;
                           });
                         },
                       ),
@@ -363,50 +746,50 @@ class _formPageState extends State<formPage> {
                       RadioListTile<rating>(
                         title: const Text('Strongly Disagree'),
                         value: rating.stronglyDisagree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[2].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[2].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
                         title: const Text('Disagree'),
                         value: rating.disagree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[2].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[2].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
                         title: const Text('Neutral'),
                         value: rating.neutral,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[2].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[2].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
                         title: const Text('Agree'),
                         value: rating.agree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[2].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[2].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
-                        title: const Text('Strongly Aagree'),
+                        title: const Text('Strongly Agree'),
                         value: rating.stronglyAgree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[2].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[2].ratingChoosen = value;
                           });
                         },
                       ),
@@ -425,50 +808,50 @@ class _formPageState extends State<formPage> {
                       RadioListTile<rating>(
                         title: const Text('Strongly Disagree'),
                         value: rating.stronglyDisagree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[3].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[3].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
                         title: const Text('Disagree'),
                         value: rating.disagree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[3].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[3].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
                         title: const Text('Neutral'),
                         value: rating.neutral,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[3].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[3].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
                         title: const Text('Agree'),
                         value: rating.agree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[3].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[3].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
-                        title: const Text('Strongly Aagree'),
+                        title: const Text('Strongly Agree'),
                         value: rating.stronglyAgree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[3].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[3].ratingChoosen = value;
                           });
                         },
                       ),
@@ -487,50 +870,50 @@ class _formPageState extends State<formPage> {
                       RadioListTile<rating>(
                         title: const Text('Strongly Disagree'),
                         value: rating.stronglyDisagree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[4].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[4].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
                         title: const Text('Disagree'),
                         value: rating.disagree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[4].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[4].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
                         title: const Text('Neutral'),
                         value: rating.neutral,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[4].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[4].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
                         title: const Text('Agree'),
                         value: rating.agree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[4].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[4].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
-                        title: const Text('Strongly Aagree'),
+                        title: const Text('Strongly Agree'),
                         value: rating.stronglyAgree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[4].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[4].ratingChoosen = value;
                           });
                         },
                       ),
@@ -549,50 +932,50 @@ class _formPageState extends State<formPage> {
                       RadioListTile<rating>(
                         title: const Text('Strongly Disagree'),
                         value: rating.stronglyDisagree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[5].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[5].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
                         title: const Text('Disagree'),
                         value: rating.disagree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[5].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[5].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
                         title: const Text('Neutral'),
                         value: rating.neutral,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[5].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[5].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
                         title: const Text('Agree'),
                         value: rating.agree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[5].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[5].ratingChoosen = value;
                           });
                         },
                       ),
                       RadioListTile<rating>(
-                        title: const Text('Strongly Aagree'),
+                        title: const Text('Strongly Agree'),
                         value: rating.stronglyAgree,
-                        groupValue: ratingChoosen,
+                        groupValue: formRating[5].ratingChoosen,
                         onChanged: (rating value) {
                           setState(() {
-                            ratingChoosen = value;
+                            formRating[5].ratingChoosen = value;
                           });
                         },
                       ),
@@ -626,12 +1009,12 @@ class _formPageState extends State<formPage> {
                     height: 20,
                   ),
                   DropdownButton<String>(
-                    value: dropdownValue,
+                    value: stateChosen,
                     icon: Icon(Icons.unfold_more),
                     iconSize: 24,
                     elevation: 16,
                     style: TextStyle(
-                        color: Colors.black,
+                      color: Colors.black,
                     ),
                     underline: Container(
                       height: 2,
@@ -639,21 +1022,23 @@ class _formPageState extends State<formPage> {
                     ),
                     onChanged: (String newValue) {
                       setState(() {
-                        dropdownValue = newValue;
+                        stateChosen = newValue;
                       });
                     },
-                    items: usState().state
+                    items: usState()
+                        .state
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
                       );
-                    })
-                        .toList(),
+                    }).toList(),
                   ),
+
                   SizedBox(
                     height: 20,
                   ),
+
                   Text(
                     "Payment Plan",
                     textAlign: TextAlign.center,
@@ -685,13 +1070,9 @@ class _formPageState extends State<formPage> {
                         fontSize: 20,
                       )),
                   TextFormField(
+                    controller: WIPValue,
                     keyboardType: TextInputType.numberWithOptions(
                         signed: false, decimal: true),
-                    validator: (String value) {
-                      return value.length > 6
-                          ? null
-                          : 'Password should be more than 6 character';
-                    },
                     decoration: InputDecoration(
                       hintText: "Planned Loan ",
                     ),
@@ -701,12 +1082,77 @@ class _formPageState extends State<formPage> {
                   ),
                   RaisedButton(
                     child: Text("Calculate"),
-                    onPressed: (){},
+                    onPressed: () async {
+                      List<String> apscore = List();
+                      print("GPA: ${GPAValue.value.text.trim()}");
+                      print("SAT: ${SATValue.value.text.trim()}");
+                      print("ACT: ${ACTValue.value.text.trim()}");
+                      print("History: ${APScores["US History"]}");
+                      print("Biology: ${APScores["Biology"]}");
+                      print("Calculus AB: ${APScores["Calculus AB"]}");
+                      print("Calculus BC: ${APScores["Calculus BC"]}");
+                      print("Chemistry: ${APScores["Chemistry"]}");
+                      print(
+                          "Chinese Language and Culture: ${APScores["Chinese Language and Culture"]}");
+                      print(
+                          "Computer Science A: ${APScores["Computer Science A"]}");
+                      print(
+                          "English Language and Composition: ${APScores["English Language and Composition"]}");
+                      print(
+                          "Environmental Science: ${APScores["Environmental Science"]}");
+                      print(
+                          "European History: ${APScores["European History"]}");
+                      print("Physics 1: ${APScores["Physics 1"]}");
+                      print("Physics 2: ${APScores["Physics 2"]}");
+                      print("Physics C: ${APScores["Physics C"]}");
+                      print("State Chosen: ${stateChosen}");
+                      print("MBTI: $MBTIChosen");
+                      print("WIP: ${WIPValue.value.text.trim()}");
+                      String apscorelist = "";
+                      APScores.forEach((k, v) {
+                        if (v == "Null")
+                          apscorelist += "NA,";
+                        else
+                          apscorelist += "$v,";
+                      });
+                      apscorelist =
+                          apscorelist.substring(0, apscorelist.length - 1);
+                      Map result = await collegeGPSHTTP().getResult(
+                          GPAValue.value.text.trim(),
+                          SATValue.value.text.trim(),
+                          ACTValue.value.text.trim(),
+                          apscorelist,
+                          MBTI.indexOf(MBTIChosen).toString(),
+                          stateChosen.substring(0, 2),
+                          WIPValue.value.text.trim());
+                      print('${result["name"]}');
+                      if (result["name"] != null) {
+                        await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text(
+                                    "CollegeGPS has recommended ${result["name"]} for you to apply"),
+                                content: Image.network("${result["image"]}"),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: Text("Share"),
+                                    onPressed: () => Share.share(
+                                        "CollegeGPS has recommended ${result["name"]} for you to apply"),
+                                  ),
+                                  FlatButton(
+                                    child: Text("Close"),
+                                    onPressed: () => Navigator.pop(context),
+                                  )
+                                ],
+                              );
+                            });
+                      }
+                    },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
                         side: BorderSide(color: Colors.blueAccent)),
                   )
-
                 ],
               ),
             ),
