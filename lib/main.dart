@@ -17,9 +17,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Collegps',
       theme: ThemeData(
-//        primaryColor: Colors.white,
-        accentColor: Colors.white,
+//        accentColor: Colors.white,
+      primaryColor: Colors.white,
         fontFamily: "Roboto-Medium",
+
       ),
       debugShowCheckedModeBanner: false,
       home: splashScreen(),
