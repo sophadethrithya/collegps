@@ -776,8 +776,14 @@ class _formPageState extends State<formPage> {
                         else
                           apscorelist += "$v,";
                       });
+
                       apscorelist =
                           apscorelist.substring(0, apscorelist.length - 1);
+                      if (GPAValue.value.text == "") GPAValue.text = "0";
+                      if (SATValue.value.text == "") SATValue.text = "0";
+                      if (ACTValue.value.text == "") ACTValue.text = "0";
+                      if (WIPValue.value.text == "") WIPValue.text = "0";
+
                       Map result = await collegeGPSHTTP().getResult(
                           GPAValue.value.text.trim(),
                           SATValue.value.text.trim(),
