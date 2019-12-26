@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collegps/pages/getResult.dart';
 import 'package:collegps/pages/ratingDecision.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +57,7 @@ class _formPageState extends State<formPage> {
     'Physics 2': "Null",
     'Physics C': "Null",
   };
+  final scaffoldKey = GlobalKey();
   @override
   void initState() {
     // TODO: implement initState
@@ -67,6 +70,7 @@ class _formPageState extends State<formPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Color.fromARGB(255, 187, 222, 251),
       body: Stack(
         fit: StackFit.expand,
@@ -784,28 +788,43 @@ class _formPageState extends State<formPage> {
                       if (ACTValue.value.text == "") ACTValue.text = "0";
                       if (WIPValue.value.text == "") WIPValue.text = "0";
 
+                      //Adding progress indicator
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          });
+
                       Map result = await collegeGPSHTTP().getResult(
                           GPAValue.value.text.trim(),
                           SATValue.value.text.trim(),
                           ACTValue.value.text.trim(),
                           apscorelist,
-                          MBTI.indexOf(MBTIChosen).toString(),
+                          MBTIChosen,
                           stateChosen.substring(0, 2),
                           WIPValue.value.text.trim());
-                      print('${result["name"]}');
-                      if (result["name"] != null) {
-                        await showDialog(
+                      if (result.isNotEmpty) {
+                        Navigator.pop(context);
+                        showDialog(
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text(
-                                    "CollegeGPS has recommended ${result["name"]} for you to apply"),
+                                title: Center(
+                                  child: Center(
+                                    child: Center(
+                                      child: Text(
+                                          "CollegeGPS has recommended ${result["name"]} for you to apply!\nRecommended Major: ${result["major"]}"),
+                                    ),
+                                  ),
+                                ),
                                 content: Image.network("${result["image"]}"),
                                 actions: <Widget>[
                                   FlatButton(
                                     child: Text("Share"),
                                     onPressed: () => Share.share(
-                                        "CollegeGPS has recommended ${result["name"]} for you to apply"),
+                                        "CollegeGPS has recommended ${result["name"]} for you to apply!\nRecommended Major: ${result["major"]}"),
                                   ),
                                   FlatButton(
                                     child: Text("Close"),

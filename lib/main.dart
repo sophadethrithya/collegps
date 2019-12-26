@@ -7,7 +7,6 @@ void main() {
   //this was add to ensure the data that we waited for are pushed into our app
   WidgetsFlutterBinding.ensureInitialized();
 
-  //State Management & DI
   return runApp(MyApp());
 }
 
@@ -17,10 +16,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Collegps',
       theme: ThemeData(
-//        accentColor: Colors.white,
       primaryColor: Colors.white,
         fontFamily: "Roboto-Medium",
-
       ),
       debugShowCheckedModeBanner: false,
       home: splashScreen(),
